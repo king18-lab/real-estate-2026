@@ -1,0 +1,1323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Dashboard - Stackly Real Estate</title>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', -apple-system, sans-serif;
+        }
+
+        :root {
+            --gold-primary: #f7c873;
+            --gold-dark: #e0a43c;
+            --gold-light: #ffda99;
+            --dark-bg: #0a0c12;
+            --dark-card: #0f111a;
+            --dark-light: #1a1e2a;
+            --white: #ffffff;
+            --gray-light: #e0e0e0;
+            --gray-medium: #9e9e9e;
+            --success: #4caf50;
+            --danger: #ff6b6b;
+            --warning: #ffa726;
+            --info: #2196f3;
+        }
+
+        body {
+            background-color: var(--dark-bg);
+            min-height: 100vh;
+            color: var(--white);
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background: var(--dark-card);
+            box-shadow: 0 2px 10px rgba(247, 200, 115, 0.2);
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            border-bottom: 2px solid var(--gold-primary);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .nav-logo span {
+            color: var(--white);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+
+        .nav-link:hover {
+            color: var(--gold-primary);
+            background: rgba(247, 200, 115, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--gold-primary);
+            background: rgba(247, 200, 115, 0.15);
+            font-weight: 600;
+            border-left: 3px solid var(--gold-primary);
+        }
+
+        .nav-link i {
+            width: 18px;
+            height: 18px;
+        }
+
+        .profile-dropdown {
+            position: relative;
+            cursor: pointer;
+        }
+
+        .profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 16px;
+            background: var(--dark-light);
+            border-radius: 40px;
+            border: 1px solid var(--gold-primary);
+        }
+
+        .profile-btn img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--gold-primary);
+        }
+
+        .profile-btn span {
+            color: var(--white);
+        }
+
+        .dropdown-content {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: var(--dark-card);
+            border-radius: 8px;
+            box-shadow: 0 5px 20px rgba(247, 200, 115, 0.3);
+            width: 250px;
+            display: none;
+            z-index: 1000;
+            border: 1px solid var(--gold-primary);
+        }
+
+        .dropdown-content.show {
+            display: block;
+        }
+
+        .dropdown-header {
+            padding: 16px;
+            border-bottom: 1px solid var(--gold-primary);
+        }
+
+        .dropdown-header h4 {
+            color: var(--white);
+            margin-bottom: 4px;
+        }
+
+        .dropdown-header p {
+            color: var(--gray-medium);
+            font-size: 13px;
+        }
+
+        .dropdown-item {
+            padding: 12px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: var(--white);
+            text-decoration: none;
+            transition: background 0.3s;
+        }
+
+        .dropdown-item:hover {
+            background: var(--dark-light);
+            color: var(--gold-primary);
+        }
+
+        .dropdown-item i {
+            width: 18px;
+            height: 18px;
+            color: var(--gold-primary);
+        }
+
+        /* Hamburger Menu */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            gap: 6px;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: var(--white);
+            transition: 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+        }
+
+        /* Mobile Menu */
+        .mobile-menu {
+            position: fixed;
+            top: 70px;
+            left: -100%;
+            width: 100%;
+            height: calc(100vh - 70px);
+            background: var(--dark-card);
+            transition: 0.3s;
+            z-index: 999;
+            overflow-y: auto;
+            border-top: 2px solid var(--gold-primary);
+        }
+
+        .mobile-menu.active {
+            left: 0;
+        }
+
+        .mobile-nav-links {
+            padding: 2rem;
+        }
+
+        .mobile-nav-link {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 16px;
+            color: var(--white);
+            text-decoration: none;
+            border-bottom: 1px solid var(--gold-primary);
+            transition: 0.3s;
+        }
+
+        .mobile-nav-link:hover {
+            background: var(--dark-light);
+            color: var(--gold-primary);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: 80px;
+            padding: 2rem;
+            max-width: 1400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Welcome Banner */
+        .welcome-banner {
+            background: linear-gradient(135deg, var(--dark-card), var(--dark-light));
+            padding: 2rem;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            border-left: 6px solid var(--gold-primary);
+            border-right: 6px solid var(--gold-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .welcome-text h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .welcome-text h1 span {
+            color: var(--gold-primary);
+        }
+
+        .welcome-text p {
+            opacity: 0.8;
+            color: var(--gray-medium);
+        }
+
+        .customer-badge {
+            background: var(--gold-primary);
+            padding: 8px 20px;
+            border-radius: 40px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--dark-bg);
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--dark-card);
+            padding: 1.5rem;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            transition: 0.3s;
+            cursor: pointer;
+            border: 1px solid var(--dark-light);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 5px 20px rgba(247, 200, 115, 0.2);
+        }
+
+        .stat-icon {
+            width: 50px;
+            height: 50px;
+            background: rgba(247, 200, 115, 0.1);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .stat-icon i {
+            width: 24px;
+            height: 24px;
+            color: var(--gold-primary);
+        }
+
+        .stat-info h3 {
+            font-size: 14px;
+            color: var(--gray-medium);
+            margin-bottom: 4px;
+        }
+
+        .stat-info p {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--white);
+        }
+
+        /* Section Title */
+        .section-title {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+            margin-top: 2rem;
+            border-bottom: 2px solid var(--gold-primary);
+            padding-bottom: 10px;
+        }
+
+        .section-title h2 {
+            color: var(--white);
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .section-title h2 i {
+            color: var(--gold-primary);
+        }
+
+        .view-all {
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* Properties Grid */
+        .properties-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .property-card {
+            background: var(--dark-card);
+            border-radius: 20px;
+            overflow: hidden;
+            border: 1px solid var(--dark-light);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .property-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 5px 20px rgba(247, 200, 115, 0.2);
+        }
+
+        .property-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .property-status {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-available {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-sold {
+            background: var(--danger);
+            color: white;
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--dark-bg);
+        }
+
+        .property-info {
+            padding: 1.5rem;
+        }
+
+        .property-info h3 {
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 18px;
+        }
+
+        .property-location {
+            color: var(--gray-medium);
+            font-size: 13px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 10px;
+        }
+
+        .property-details {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 15px;
+            font-size: 13px;
+            color: var(--gray-medium);
+        }
+
+        .property-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--gold-primary);
+            margin-bottom: 15px;
+        }
+
+        .property-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 8px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.3s;
+            text-align: center;
+            border: none;
+        }
+
+        .btn-interest {
+            background: var(--gold-primary);
+            color: var(--dark-bg);
+        }
+
+        .btn-details {
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            color: var(--gold-primary);
+        }
+
+        .btn-interest:hover, .btn-details:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Saved Properties */
+        .saved-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .saved-card {
+            background: var(--dark-card);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid var(--dark-light);
+            transition: 0.3s;
+            position: relative;
+        }
+
+        .saved-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--gold-primary);
+        }
+
+        .remove-saved {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: var(--danger);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+        }
+
+        .remove-saved i {
+            width: 16px;
+            height: 16px;
+            color: white;
+        }
+
+        /* Recommendations Row */
+        .recommendations-row {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 1rem 0 2rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--gold-primary) var(--dark-light);
+        }
+
+        .recommendations-row::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .recommendations-row::-webkit-scrollbar-track {
+            background: var(--dark-light);
+            border-radius: 10px;
+        }
+
+        .recommendations-row::-webkit-scrollbar-thumb {
+            background: var(--gold-primary);
+            border-radius: 10px;
+        }
+
+        .recommend-card {
+            min-width: 200px;
+            width: 200px;
+            background: var(--dark-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid var(--dark-light);
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .recommend-card:hover {
+            transform: scale(1.05);
+            border-color: var(--gold-primary);
+        }
+
+        .recommend-img {
+            width: 100%;
+            height: 120px;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .recommend-info {
+            padding: 0.8rem;
+            text-align: center;
+        }
+
+        .recommend-info h4 {
+            color: var(--white);
+            font-size: 14px;
+            margin-bottom: 4px;
+        }
+
+        .recommend-info p {
+            color: var(--gold-primary);
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Inquiries List */
+        .inquiries-list {
+            background: var(--dark-card);
+            border-radius: 20px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .inquiry-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid var(--dark-light);
+            cursor: pointer;
+            transition: 0.3s;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .inquiry-item:hover {
+            background: var(--dark-light);
+        }
+
+        .inquiry-status {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: var(--warning);
+            color: var(--dark-bg);
+        }
+
+        .status-replied {
+            background: var(--success);
+            color: white;
+        }
+
+        .status-closed {
+            background: var(--gray-medium);
+            color: var(--dark-bg);
+        }
+
+        /* Inquiry Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.show {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--dark-card);
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            border: 2px solid var(--gold-primary);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--gold-primary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-header h3 {
+            color: var(--white);
+        }
+
+        .modal-close {
+            font-size: 28px;
+            cursor: pointer;
+            color: var(--gray-medium);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        .form-group label {
+            display: block;
+            color: var(--white);
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            background: var(--dark-light);
+            border: 1px solid var(--gray-medium);
+            border-radius: 8px;
+            color: var(--white);
+        }
+
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--gold-primary);
+        }
+
+        .modal-footer {
+            padding: 1.5rem;
+            border-top: 1px solid var(--gold-primary);
+            display: flex;
+            gap: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-submit {
+            padding: 10px 24px;
+            background: var(--gold-primary);
+            border: none;
+            border-radius: 8px;
+            color: var(--dark-bg);
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-cancel {
+            padding: 10px 24px;
+            background: transparent;
+            border: 1px solid var(--gold-primary);
+            border-radius: 8px;
+            color: var(--gold-primary);
+            cursor: pointer;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                display: none;
+            }
+            .hamburger {
+                display: flex;
+            }
+            .main-content {
+                padding: 1rem;
+            }
+            .welcome-text h1 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">STACKLY<span> </span></a>
+
+            <div class="nav-menu">
+                <a href="#" class="nav-link active" onclick="showSection('dashboard'); return false;">
+                    <i data-lucide="home"></i> Dashboard
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('properties'); return false;">
+                    <i data-lucide="building"></i> Properties
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('saved'); return false;">
+                    <i data-lucide="heart"></i> Saved
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('inquiries'); return false;">
+                    <i data-lucide="mail"></i> Inquiries
+                </a>
+                <a href="#" class="nav-link" onclick="showSection('settings'); return false;">
+                    <i data-lucide="settings"></i> Settings
+                </a>
+                
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="profile-btn" onclick="toggleDropdown()">
+                        <img src="emp1.webp" alt="Profile">
+                        <span id="profileName">Customer User</span>
+                        <i data-lucide="chevron-down"></i>
+                    </div>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <div class="dropdown-header">
+                            <h4 id="dropdownName">Customer User</h4>
+                            <p id="dropdownEmail">customer@stackly.com</p>
+                        </div>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="user"></i> My Profile
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="settings"></i> Account Settings
+                        </a>
+                        <a href="#" class="dropdown-item" onclick="window.location.href='404.html'">
+                            <i data-lucide="heart"></i> Saved Properties
+                        </a>
+                        <a href="index.html" class="dropdown-item">
+                            <i data-lucide="home"></i> Back to Home
+                        </a>
+                        <a href="login.html" class="dropdown-item" onclick="logout()">
+                            <i data-lucide="log-out"></i> Sign Out
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hamburger" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu">
+        <div class="mobile-nav-links">
+            <a href="#" class="mobile-nav-link" onclick="showSection('dashboard'); toggleMobileMenu(); return false;">
+                <i data-lucide="home"></i> Dashboard
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('properties'); toggleMobileMenu(); return false;">
+                <i data-lucide="building"></i> Properties
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('saved'); toggleMobileMenu(); return false;">
+                <i data-lucide="heart"></i> Saved
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('inquiries'); toggleMobileMenu(); return false;">
+                <i data-lucide="mail"></i> Inquiries
+            </a>
+            <a href="#" class="mobile-nav-link" onclick="showSection('settings'); toggleMobileMenu(); return false;">
+                <i data-lucide="settings"></i> Settings
+            </a>
+            <div style="border-top: 1px solid var(--gold-primary); margin: 1rem 0;"></div>
+            <a href="index.html" class="mobile-nav-link">
+                <i data-lucide="home"></i> Back to Home
+            </a>
+            <a href="login.html" class="mobile-nav-link" onclick="logout()">
+                <i data-lucide="log-out"></i> Sign Out
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- DASHBOARD SECTION -->
+        <div id="dashboard-section">
+            <div class="welcome-banner">
+                <div class="welcome-text">
+                    <h1>Welcome back, <span id="welcomeName">Customer</span>!</h1>
+                    <p id="welcomeEmail">customer@stackly.com</p>
+                </div>
+                <div class="customer-badge">
+                    <i data-lucide="user"></i>
+                    <span>CUSTOMER ACCOUNT</span>
+                </div>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card" onclick="showSection('saved')">
+                    <div class="stat-icon"><i data-lucide="heart"></i></div>
+                    <div class="stat-info">
+                        <h3>Saved Properties</h3>
+                        <p id="savedCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="showSection('inquiries')">
+                    <div class="stat-icon"><i data-lucide="mail"></i></div>
+                    <div class="stat-info">
+                        <h3>Active Inquiries</h3>
+                        <p id="inquiryCount">0</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon"><i data-lucide="eye"></i></div>
+                    <div class="stat-info">
+                        <h3>Properties Viewed</h3>
+                        <p>24</p>
+                    </div>
+                </div>
+                <div class="stat-card" onclick="window.location.href='404.html'">
+                    <div class="stat-icon"><i data-lucide="calendar"></i></div>
+                    <div class="stat-info">
+                        <h3>Site Visits</h3>
+                        <p>3</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section-title">
+                <h2><i data-lucide="building"></i> Featured Properties</h2>
+                <button class="view-all" onclick="showSection('properties')">View All <i data-lucide="arrow-right"></i></button>
+            </div>
+            
+            <div class="properties-grid" id="featuredProperties"></div>
+
+            <div class="section-title">
+                <h2><i data-lucide="trending-up"></i> Recommended for You</h2>
+                <button class="view-all" onclick="showSection('properties')">View All <i data-lucide="arrow-right"></i></button>
+            </div>
+            
+            <div class="recommendations-row" id="recommendations"></div>
+        </div>
+
+        <!-- PROPERTIES SECTION -->
+        <div id="properties-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="building"></i> All Properties</h2>
+                <div>
+                    <select id="filterStatus" onchange="filterProperties()" style="background: var(--dark-light); color: white; padding: 8px; border-radius: 8px; border: 1px solid var(--gold-primary);">
+                        <option value="all">All Properties</option>
+                        <option value="available">Available</option>
+                        <option value="sold">Sold</option>
+                        <option value="pending">Pending</option>
+                    </select>
+                </div>
+            </div>
+            <div class="properties-grid" id="allProperties"></div>
+        </div>
+
+        <!-- SAVED SECTION -->
+        <div id="saved-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="heart"></i> Saved Properties</h2>
+            </div>
+            <div class="saved-grid" id="savedProperties"></div>
+        </div>
+
+        <!-- INQUIRIES SECTION -->
+        <div id="inquiries-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="mail"></i> My Inquiries</h2>
+                <button class="view-all" onclick="openInquiryModal()">
+                    <i data-lucide="plus-circle"></i> New Inquiry
+                </button>
+            </div>
+            <div class="inquiries-list" id="allInquiries"></div>
+        </div>
+
+        <!-- SETTINGS SECTION -->
+        <div id="settings-section" style="display: none;">
+            <div class="section-title">
+                <h2><i data-lucide="settings"></i> Account Settings</h2>
+            </div>
+            <div class="properties-grid">
+                <div class="property-card">
+                    <div class="property-info">
+                        <h3>Personal Information</h3>
+                        <p>Update your personal details</p>
+                        <div style="margin: 1rem 0; color: var(--gray-medium);">
+                            <p id="settingsName">Customer User</p>
+                            <p id="settingsEmail">customer@stackly.com</p>
+                            <p>+91 98765 43210</p>
+                        </div>
+                        <button class="action-btn btn-interest" onclick="window.location.href='404.html'">Edit Profile</button>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <div class="property-info">
+                        <h3>Notification Preferences</h3>
+                        <p>Manage email and SMS notifications</p>
+                        <div style="margin: 1rem 0; color: var(--gray-medium);">
+                            <p>New Properties: Yes</p>
+                            <p>Price Drops: Yes</p>
+                            <p>Inquiry Updates: Yes</p>
+                        </div>
+                        <button class="action-btn btn-interest" onclick="window.location.href='404.html'">Configure</button>
+                    </div>
+                </div>
+                <div class="property-card">
+                    <div class="property-info">
+                        <h3>Site Visit Preferences</h3>
+                        <p>Manage your site visit schedule</p>
+                        <div style="margin: 1rem 0; color: var(--gray-medium);">
+                            <p>Preferred Time: Weekends</p>
+                            <p>Transport: Self</p>
+                        </div>
+                        <button class="action-btn btn-interest" onclick="window.location.href='404.html'">Update</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Inquiry Modal -->
+    <div id="inquiryModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>New Inquiry</h3>
+                <span class="modal-close" onclick="closeInquiryModal()">&times;</span>
+            </div>
+            <div class="modal-body">
+                <form id="inquiryForm">
+                    <div class="form-group">
+                        <label>Property *</label>
+                        <select id="inquiryProperty" required>
+                            <option value="">Select Property</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Message *</label>
+                        <textarea id="inquiryMessage" rows="4" placeholder="Enter your message or questions about the property..." required></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" onclick="closeInquiryModal()">Cancel</button>
+                <button class="btn-submit" onclick="submitInquiry()">Send Inquiry</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Sample Properties Data
+        let properties = [
+            { id: 1, name: "Luxury Villa", location: "Whitefield, Bangalore", price: "₹2.5 Cr", area: "3500 sq ft", beds: 4, baths: 3, status: "available", image: "r21 (1).webp" },
+            { id: 2, name: "Modern Apartment", location: "Indiranagar, Bangalore", price: "₹1.2 Cr", area: "1800 sq ft", beds: 3, baths: 2, status: "available", image: "r22 (1).webp" },
+            { id: 3, name: "Beachfront Villa", location: "Goa", price: "₹4.5 Cr", area: "4200 sq ft", beds: 5, baths: 4, status: "sold", image: "r23 (1).webp" },
+            { id: 4, name: "Downtown Penthouse", location: "MG Road, Bangalore", price: "₹3.8 Cr", area: "2800 sq ft", beds: 4, baths: 3, status: "available", image: "r24 (1).webp" },
+            { id: 5, name: "Garden Villa", location: "Electronic City, Bangalore", price: "₹1.8 Cr", area: "2200 sq ft", beds: 3, baths: 2, status: "pending", image: "r26 (1).webp" }
+        ];
+
+        let savedProperties = [];
+        let inquiries = [
+            { id: 1, property: "Luxury Villa", message: "Interested in this property. Please schedule a site visit.", status: "replied", date: "2026-03-20", response: "We'll contact you shortly to schedule a visit." },
+            { id: 2, property: "Modern Apartment", message: "What are the payment terms and loan options available?", status: "pending", date: "2026-03-22", response: "" }
+        ];
+
+        let nextInquiryId = 3;
+
+        // Load user data
+        function loadUserData() {
+            const userData = JSON.parse(localStorage.getItem('re_user'));
+            if (userData) {
+                const userName = userData.name || 'Customer';
+                const userEmail = userData.email || 'customer@stackly.com';
+                
+                document.getElementById('profileName').textContent = userName;
+                document.getElementById('dropdownName').textContent = userName;
+                document.getElementById('dropdownEmail').textContent = userEmail;
+                document.getElementById('welcomeName').textContent = userName.split(' ')[0] || 'Customer';
+                document.getElementById('welcomeEmail').textContent = userEmail;
+                document.getElementById('settingsName').textContent = userName;
+                document.getElementById('settingsEmail').textContent = userEmail;
+            }
+        }
+
+        // Load saved properties from localStorage
+        function loadSavedProperties() {
+            const saved = localStorage.getItem('re_saved');
+            if (saved) {
+                savedProperties = JSON.parse(saved);
+            }
+            updateStats();
+        }
+
+        // Save properties to localStorage
+        function saveSavedProperties() {
+            localStorage.setItem('re_saved', JSON.stringify(savedProperties));
+            updateStats();
+        }
+
+        // Update stats
+        function updateStats() {
+            document.getElementById('savedCount').textContent = savedProperties.length;
+            document.getElementById('inquiryCount').textContent = inquiries.filter(i => i.status === 'pending').length;
+        }
+
+        // Toggle save property
+        function toggleSave(propertyId, event) {
+            event.stopPropagation();
+            const index = savedProperties.indexOf(propertyId);
+            if (index === -1) {
+                savedProperties.push(propertyId);
+            } else {
+                savedProperties.splice(index, 1);
+            }
+            saveSavedProperties();
+            renderAllSections();
+        }
+
+        // Check if property is saved
+        function isSaved(propertyId) {
+            return savedProperties.includes(propertyId);
+        }
+
+        // Render Properties
+        function renderProperties(containerId, propertiesList, showSaveButton = true) {
+            const container = document.getElementById(containerId);
+            container.innerHTML = propertiesList.map(prop => `
+                <div class="property-card" onclick="window.location.href='404.html'">
+                    <div class="property-img" style="background-image: url('${prop.image}')">
+                        <span class="property-status status-${prop.status}">${prop.status.toUpperCase()}</span>
+                    </div>
+                    <div class="property-info">
+                        <h3>${prop.name}</h3>
+                        <div class="property-location"><i data-lucide="map-pin"></i> ${prop.location}</div>
+                        <div class="property-details">
+                            <span><i data-lucide="maximize"></i> ${prop.area}</span>
+                            <span><i data-lucide="bed"></i> ${prop.beds} Beds</span>
+                            <span><i data-lucide="bath"></i> ${prop.baths} Baths</span>
+                        </div>
+                        <div class="property-price">${prop.price}</div>
+                        <div class="property-actions">
+                            ${showSaveButton ? `
+                                <button class="action-btn ${isSaved(prop.id) ? 'btn-interest' : 'btn-details'}" onclick="event.stopPropagation(); toggleSave(${prop.id}, event)">
+                                    <i data-lucide="${isSaved(prop.id) ? 'heart' : 'heart'}"></i> ${isSaved(prop.id) ? 'Saved' : 'Save'}
+                                </button>
+                            ` : ''}
+                            <button class="action-btn btn-interest" onclick="event.stopPropagation(); openInquiryWithProperty('${prop.name}')">Interested</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Render Saved Properties
+        function renderSavedProperties() {
+            const savedProps = properties.filter(p => savedProperties.includes(p.id));
+            const container = document.getElementById('savedProperties');
+            if (savedProps.length === 0) {
+                container.innerHTML = '<div style="text-align: center; padding: 3rem; color: var(--gray-medium);">No saved properties yet. Browse properties and click "Save" to add them here.</div>';
+                return;
+            }
+            container.innerHTML = savedProps.map(prop => `
+                <div class="saved-card" onclick="window.location.href='404.html'">
+                    <div class="remove-saved" onclick="event.stopPropagation(); toggleSave(${prop.id}, event)">
+                        <i data-lucide="x"></i>
+                    </div>
+                    <div class="property-img" style="background-image: url('${prop.image}'); height: 150px;"></div>
+                    <div class="property-info" style="padding: 1rem;">
+                        <h3>${prop.name}</h3>
+                        <div class="property-location">${prop.location}</div>
+                        <div class="property-price">${prop.price}</div>
+                        <button class="action-btn btn-interest" onclick="event.stopPropagation(); openInquiryWithProperty('${prop.name}')">Inquire Now</button>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Render Recommendations
+        function renderRecommendations() {
+            const available = properties.filter(p => p.status === 'available' && !savedProperties.includes(p.id)).slice(0, 5);
+            const container = document.getElementById('recommendations');
+            container.innerHTML = available.map(prop => `
+                <div class="recommend-card" onclick="window.location.href='404.html'">
+                    <div class="recommend-img" style="background-image: url('${prop.image}')"></div>
+                    <div class="recommend-info">
+                        <h4>${prop.name}</h4>
+                        <p>${prop.price}</p>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render Inquiries
+        function renderInquiries() {
+            const container = document.getElementById('allInquiries');
+            container.innerHTML = inquiries.map(inq => `
+                <div class="inquiry-item" onclick="window.location.href='404.html'">
+                    <div class="inquiry-info" style="flex: 1;">
+                        <h4>${inq.property}</h4>
+                        <p style="font-size: 13px; margin: 5px 0;">${inq.message}</p>
+                        ${inq.response ? `<p style="font-size: 12px; color: var(--gold-primary);"><i data-lucide="mail"></i> Response: ${inq.response}</p>` : ''}
+                        <p style="font-size: 11px; color: var(--gray-medium);">${inq.date}</p>
+                    </div>
+                    <span class="inquiry-status status-${inq.status}">${inq.status.toUpperCase()}</span>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        // Filter Properties
+        function filterProperties() {
+            const filter = document.getElementById('filterStatus').value;
+            let filtered = properties;
+            if (filter !== 'all') {
+                filtered = properties.filter(p => p.status === filter);
+            }
+            renderProperties('allProperties', filtered, true);
+        }
+
+        // Inquiry Modal
+        function openInquiryModal() {
+            const select = document.getElementById('inquiryProperty');
+            select.innerHTML = '<option value="">Select Property</option>' + 
+                properties.filter(p => p.status === 'available').map(p => `<option value="${p.name}">${p.name}</option>`).join('');
+            document.getElementById('inquiryModal').classList.add('show');
+        }
+
+        function openInquiryWithProperty(propertyName) {
+            const select = document.getElementById('inquiryProperty');
+            select.innerHTML = '<option value="">Select Property</option>' + 
+                properties.filter(p => p.status === 'available').map(p => `<option value="${p.name}" ${p.name === propertyName ? 'selected' : ''}>${p.name}</option>`).join('');
+            document.getElementById('inquiryModal').classList.add('show');
+        }
+
+        function closeInquiryModal() {
+            document.getElementById('inquiryModal').classList.remove('show');
+            document.getElementById('inquiryForm').reset();
+        }
+
+        function submitInquiry() {
+            const property = document.getElementById('inquiryProperty').value;
+            const message = document.getElementById('inquiryMessage').value;
+            
+            if (!property || !message) {
+                alert('Please select a property and enter a message');
+                return;
+            }
+            
+            inquiries.unshift({
+                id: nextInquiryId++,
+                property: property,
+                message: message,
+                status: 'pending',
+                date: new Date().toISOString().split('T')[0],
+                response: ''
+            });
+            
+            renderInquiries();
+            updateStats();
+            closeInquiryModal();
+            alert('Inquiry sent successfully! You will receive a response within 24 hours.');
+        }
+
+        // Show Section
+        function showSection(section) {
+            document.getElementById('dashboard-section').style.display = 'none';
+            document.getElementById('properties-section').style.display = 'none';
+            document.getElementById('saved-section').style.display = 'none';
+            document.getElementById('inquiries-section').style.display = 'none';
+            document.getElementById('settings-section').style.display = 'none';
+            
+            document.getElementById(section + '-section').style.display = 'block';
+            
+            if (section === 'properties') {
+                renderProperties('allProperties', properties, true);
+            } else if (section === 'saved') {
+                renderSavedProperties();
+            } else if (section === 'inquiries') {
+                renderInquiries();
+            }
+            
+            document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sectionMap = { dashboard: 0, properties: 1, saved: 2, inquiries: 3, settings: 4 };
+            if (navLinks[sectionMap[section]]) navLinks[sectionMap[section]].classList.add('active');
+            
+            lucide.createIcons();
+        }
+
+        function renderAllSections() {
+            renderProperties('featuredProperties', properties.filter(p => p.status === 'available').slice(0, 3), true);
+            renderRecommendations();
+            if (document.getElementById('properties-section').style.display !== 'none') {
+                renderProperties('allProperties', properties, true);
+            }
+            if (document.getElementById('saved-section').style.display !== 'none') {
+                renderSavedProperties();
+            }
+            updateStats();
+        }
+
+        function toggleDropdown() {
+            document.getElementById('dropdownContent').classList.toggle('show');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('active');
+            document.querySelector('.hamburger').classList.toggle('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('re_user');
+            window.location.href = 'index.html';
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.profile-dropdown')) {
+                document.getElementById('dropdownContent')?.classList.remove('show');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadUserData();
+            loadSavedProperties();
+            renderProperties('featuredProperties', properties.filter(p => p.status === 'available').slice(0, 3), true);
+            renderRecommendations();
+            updateStats();
+            lucide.createIcons();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>404 | Stackly Real Estate</title>
+
+<style>
+
+/* PAGE */
+#stacklyRE404Container{
+min-height:100vh;
+width:100%;
+display:flex;
+align-items:center;
+justify-content:center;
+flex-direction:column;
+text-align:center;
+background:linear-gradient(135deg,#0a0c12,#0f111a);
+color:white;
+font-family:'Poppins', 'Inter', Arial, sans-serif;
+padding:40px 20px;
+position:relative;
+overflow:hidden;
+}
+
+/* 404 NUMBER */
+#stacklyRE404Number{
+font-size:clamp(70px,12vw,140px);
+font-weight:800;
+letter-spacing:6px;
+margin-bottom:10px;
+background: linear-gradient(135deg, #f7c873, #e0a43c);
+-webkit-background-clip: text;
+background-clip: text;
+color: transparent;
+text-shadow: 0 0 30px rgba(247, 200, 115, 0.3);
+animation: glowPulse 2s infinite;
+}
+
+@keyframes glowPulse {
+0%, 100% { text-shadow: 0 0 20px rgba(247, 200, 115, 0.3); }
+50% { text-shadow: 0 0 50px rgba(247, 200, 115, 0.5); }
+}
+
+/* TITLE */
+#stacklyRE404Title{
+font-size:clamp(22px,5vw,40px);
+margin-bottom:12px;
+color: white;
+font-weight: 700;
+}
+
+/* DESCRIPTION */
+#stacklyRE404Desc{
+font-size:clamp(15px,3vw,18px);
+max-width:600px;
+line-height:1.6;
+opacity:0.8;
+margin-bottom:35px;
+color: #cccccc;
+}
+
+/* BUTTON CONTAINER */
+#stacklyRE404Buttons{
+display:flex;
+gap:20px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:20px;
+}
+
+/* BUTTON - HOME */
+#stacklyRE404HomeBtn{
+padding:14px 28px;
+border: none;
+background: linear-gradient(135deg, #f7c873, #e0a43c);
+color: #111;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+border-radius:40px;
+min-width:160px;
+font-weight:600;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+box-shadow: 0 5px 15px rgba(247, 200, 115, 0.3);
+}
+
+#stacklyRE404HomeBtn:hover{
+transform:translateY(-3px);
+box-shadow:0 8px 25px rgba(247, 200, 115, 0.5);
+}
+
+/* BUTTON - PREVIOUS PAGE */
+#stacklyRE404PrevBtn{
+padding:14px 28px;
+border:2px solid #f7c873;
+background:transparent;
+color:#f7c873;
+font-size:16px;
+cursor:pointer;
+transition:0.3s;
+border-radius:40px;
+min-width:160px;
+font-weight:600;
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 8px;
+}
+
+#stacklyRE404PrevBtn:hover{
+background:#f7c873;
+color:#111;
+transform:translateY(-3px);
+box-shadow:0 5px 15px rgba(247, 200, 115, 0.3);
+}
+
+/* HOUSE ICON DECORATION */
+#stacklyRE404House{
+position:absolute;
+top:10%;
+left:5%;
+width:120px;
+height:120px;
+opacity:0.15;
+animation:floatHouse 8s ease-in-out infinite;
+}
+
+#stacklyRE404House i{
+font-size:100px;
+color:#f7c873;
+}
+
+/* FLOAT CIRCLE */
+#stacklyRE404Circle{
+position:absolute;
+bottom:-80px;
+right:-80px;
+width:300px;
+height:300px;
+border-radius:50%;
+background:rgba(247, 200, 115, 0.05);
+animation:floatCircle 8s ease-in-out infinite;
+}
+
+/* KEY ICON DECORATION */
+#stacklyRE404Key{
+position:absolute;
+top:70%;
+right:8%;
+width:80px;
+height:80px;
+opacity:0.15;
+animation:pulseKey 2s ease-in-out infinite;
+}
+
+#stacklyRE404Key i{
+font-size:80px;
+color:#e0a43c;
+}
+
+/* BUILDING ICON DECORATION */
+#stacklyRE404Building{
+position:absolute;
+bottom:15%;
+left:3%;
+width:100px;
+height:100px;
+opacity:0.1;
+animation:floatBuilding 10s ease-in-out infinite;
+}
+
+#stacklyRE404Building i{
+font-size:90px;
+color:#f7c873;
+}
+
+/* ANIMATIONS */
+@keyframes floatHouse{
+0%,100%{transform:translateY(0px) rotate(0deg);}
+50%{transform:translateY(-20px) rotate(5deg);}
+}
+
+@keyframes floatCircle{
+0%,100%{transform:translateY(0px);}
+50%{transform:translateY(-30px);}
+}
+
+@keyframes pulseKey{
+0%,100%{transform:scale(1);opacity:0.15;}
+50%{transform:scale(1.1);opacity:0.25;}
+}
+
+@keyframes floatBuilding{
+0%,100%{transform:translateX(0px) translateY(0px);}
+50%{transform:translateX(15px) translateY(-10px);}
+}
+
+/* MOBILE */
+@media(max-width:600px){
+#stacklyRE404Buttons{
+flex-direction:column;
+gap:12px;
+width:100%;
+max-width:280px;
+}
+
+#stacklyRE404HomeBtn,
+#stacklyRE404PrevBtn{
+width:100%;
+}
+
+#stacklyRE404House,
+#stacklyRE404Key,
+#stacklyRE404Building{
+display:none;
+}
+}
+
+@media(max-width:400px){
+#stacklyRE404Desc{
+font-size:14px;
+}
+}
+
+/* Message popup style */
+.message-popup {
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(247, 200, 115, 0.95);
+    color: #111;
+    padding: 12px 24px;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    z-index: 1000;
+    animation: slideUp 0.3s ease, fadeOut 0.5s ease 2.5s forwards;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    white-space: nowrap;
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+@media (max-width: 600px) {
+    .message-popup {
+        font-size: 12px;
+        padding: 10px 20px;
+        white-space: normal;
+        text-align: center;
+        max-width: 90%;
+    }
+}
+
+</style>
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+
+<div id="stacklyRE404Container">
+
+<div id="stacklyRE404Number">404</div>
+
+<div id="stacklyRE404Title">
+Property Not Found
+</div>
+
+<div id="stacklyRE404Desc">
+The page or property you're looking for cannot be found in our portfolio.
+It may have been sold, relocated, or temporarily unavailable.
+</div>
+
+<!-- BUTTONS -->
+<div id="stacklyRE404Buttons">
+<button id="stacklyRE404HomeBtn" onclick="goHome()">
+<i class="fas fa-home"></i> Back to Home
+</button>
+
+<button id="stacklyRE404PrevBtn" onclick="goToPreviousPage()">
+<i class="fas fa-arrow-left"></i> Previous Page
+</button>
+</div>
+
+<!-- Navigation info -->
+<div style="font-size: 12px; color: #666; margin-top: 20px;">
+Click "Previous Page" to return to the last page you visited
+</div>
+
+</div>
+
+<!-- House decoration -->
+<div id="stacklyRE404House">
+<i class="fas fa-home"></i>
+</div>
+
+<!-- Circle decoration -->
+<div id="stacklyRE404Circle"></div>
+
+<!-- Key icon decoration -->
+<div id="stacklyRE404Key">
+<i class="fas fa-key"></i>
+</div>
+
+<!-- Building icon decoration -->
+<div id="stacklyRE404Building">
+<i class="fas fa-building"></i>
+</div>
+
+<script>
+
+/* Show message popup */
+function showMessage(message, isError = false) {
+    // Remove existing popup if any
+    const existingPopup = document.querySelector('.message-popup');
+    if (existingPopup) {
+        existingPopup.remove();
+    }
+    
+    // Create popup
+    const popup = document.createElement('div');
+    popup.className = 'message-popup';
+    popup.innerHTML = message;
+    
+    if (isError) {
+        popup.style.background = 'rgba(211, 47, 47, 0.95)';
+        popup.style.color = 'white';
+    }
+    
+    document.body.appendChild(popup);
+    
+    // Auto remove after animation
+    setTimeout(() => {
+        if (popup && popup.parentNode) {
+            popup.remove();
+        }
+    }, 3000);
+}
+
+/* Go Home - Always works */
+function goHome() {
+    // Add fade out effect
+    const container = document.getElementById("stacklyRE404Container");
+    container.style.animation = "fadeOutDown 0.5s ease forwards";
+    setTimeout(() => {
+        window.location.href = "index.html";
+    }, 500);
+}
+
+/* Go to Previous Page - Fixed version */
+function goToPreviousPage() {
+    // Check if there's a previous page in browser history
+    // window.history.length > 1 means there's at least one page to go back to
+    if (window.history.length > 1) {
+        // Try to go back
+        try {
+            window.history.back();
+            // If successful, the page will navigate away
+            // If it fails, we'll catch and fallback to home
+        } catch (e) {
+            // If back fails, go to home
+            showMessage("Cannot go back. Redirecting to home page...");
+            setTimeout(() => {
+                window.location.href = "index.html";
+            }, 1500);
+        }
+    } else {
+        // No history, show message and go to home
+        showMessage("No previous page found. Redirecting to home page...", false);
+        setTimeout(() => {
+            window.location.href = "index.html";
+        }, 1500);
+    }
+}
+
+// Add fade out animation
+const style = document.createElement('style');
+style.textContent = `
+@keyframes fadeOutDown {
+from {
+opacity: 1;
+transform: translateY(0);
+}
+to {
+opacity: 0;
+transform: translateY(50px);
+}
+}
+`;
+document.head.appendChild(style);
+
+// Log for debugging
+console.log('404 Page Loaded - Stackly Real Estate');
+console.log('History length:', window.history.length);
+console.log('Referrer:', document.referrer);
+
+// Add hover effect for buttons
+const homeBtn = document.getElementById("stacklyRE404HomeBtn");
+const prevBtn = document.getElementById("stacklyRE404PrevBtn");
+
+if (homeBtn) {
+    homeBtn.addEventListener("mouseenter", () => {
+        homeBtn.style.transform = "translateY(-3px)";
+    });
+    homeBtn.addEventListener("mouseleave", () => {
+        homeBtn.style.transform = "translateY(0)";
+    });
+}
+
+if (prevBtn) {
+    prevBtn.addEventListener("mouseenter", () => {
+        prevBtn.style.transform = "translateY(-3px)";
+    });
+    prevBtn.addEventListener("mouseleave", () => {
+        prevBtn.style.transform = "translateY(0)";
+    });
+}
+
+// Optional: Add keyboard navigation
+document.addEventListener('keydown', function(e) {
+    // Escape key to go back? Just a nice touch
+    if (e.key === 'Escape') {
+        goToPreviousPage();
+    }
+    // Home key to go home
+    if (e.key === 'Home') {
+        goHome();
+    }
+});
+
+// Also handle browser's back button behavior
+window.addEventListener('popstate', function(event) {
+    // This fires when user clicks browser back button
+    // We don't need to do anything here as browser handles it
+    console.log('Popstate event - browser back button pressed');
+});
+
+</script>
+
+</body>
+</html>
